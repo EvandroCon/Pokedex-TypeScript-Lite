@@ -1,3 +1,0 @@
-Pokédex TypeScript Lite
-
-A aplicação deverá consultar a PokeAPI, buscar um Pokémon pelo nome ou ID, transformar os dados retornados em um objeto simplificado e permitir que alguns Pokémon sejam adicionados a um catálogo local.
