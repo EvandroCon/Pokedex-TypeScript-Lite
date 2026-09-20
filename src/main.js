@@ -22,6 +22,7 @@ buscarPokemon("pikachu").then(function (pokemon) {
     if (pokemon !== null) {
         adicionarAoCatalogo(catalogo, pokemon);
         listarCatalogo(catalogo);
+        removerDoCatalogo(catalogo, 26);
     }
 });
 let catalogo = [];
@@ -60,5 +61,17 @@ function listarCatalogo(catalogo) {
 //remover o Pokémon, se existir;
 //retornar o catálogo atualizado;
 //exibir mensagem clara no terminal.
-//function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo[]{
-//}
+function removerDoCatalogo(catalogo, id) {
+    const existe = catalogo.some(function (pokemon) {
+        return pokemon.id === id;
+    });
+    if (!existe) {
+        console.log("[AVISO] Nenhum Pokémon encontrado com esse ID.");
+        return catalogo;
+    }
+    const catalogoAtualizado = catalogo.filter(function (pokemon) {
+        return pokemon.id !== id;
+    });
+    console.log("[OK] Pokémon removido do catálogo.");
+    return catalogoAtualizado;
+}

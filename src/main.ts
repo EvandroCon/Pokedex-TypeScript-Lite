@@ -15,7 +15,9 @@ async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo |
         const pokemon: PokemonResumo = {
             id: dados.id,
             nome: dados.name,
-            tipos: dados.types[0].type.name,
+            tipos: dados.types.map(function (item) {
+                return item.type.name;
+            }),
             altura: dados.height,
             peso: dados.weight
         };
@@ -29,10 +31,11 @@ async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo |
 }
 
 buscarPokemon("pikachu").then(function (pokemon) {
-    
+
     if (pokemon !== null) {
         adicionarAoCatalogo(catalogo, pokemon);
         listarCatalogo(catalogo);
+        removerDoCatalogo(catalogo, 25);
     }
 });
 
@@ -83,6 +86,21 @@ function listarCatalogo(catalogo: PokemonResumo[]): void {
 //retornar o catálogo atualizado;
 //exibir mensagem clara no terminal.
 
-//function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo[]{
+function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo[] {
+    const existe = catalogo.some(function (pokemon) {
+        return pokemon.id === id;
+    });
 
-//}
+    if (!existe) {
+        console.log("[AVISO] Nenhum Pokémon encontrado com esse ID.");
+        return catalogo;
+    }
+
+    const catalogoAtualizado = catalogo.filter(function (pokemon) {
+        return pokemon.id !== id;
+    });
+
+    console.log("[OK] Pokémon removido do catálogo.");
+
+    return catalogoAtualizado;
+}
