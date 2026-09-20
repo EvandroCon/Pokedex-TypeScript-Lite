@@ -6,17 +6,11 @@ export interface PokemonResumo {
     peso: number;
 }
 
-async function buscarPokemon(): Promise<PokemonResumo | null> {
+async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo | null> {
     try {
-        const resposta = await fetch("https://pokeapi.co/api/v2/pokemon/pikachu");
+        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nomeOuId}`);
 
         const dados = await resposta.json();
-
-        console.log("Id: ", dados.id);
-        console.log("Nome: ", dados.name);
-        console.log("Tipo: ", dados.types[0].type.name);
-        console.log("Altura: ", dados.height);
-        console.log("Peso: ", dados.weight);
 
         const pokemon: PokemonResumo = {
             id: dados.id,
@@ -34,4 +28,6 @@ async function buscarPokemon(): Promise<PokemonResumo | null> {
     }
 }
 
-buscarPokemon();
+buscarPokemon("pikachu").then(function (pokemon) {
+    console.log(pokemon);
+});

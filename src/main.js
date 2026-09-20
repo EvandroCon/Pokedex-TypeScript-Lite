@@ -1,12 +1,9 @@
-async function buscarPokemon() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+async function buscarPokemon(nomeOuId) {
     try {
-        const resposta = await fetch("https://pokeapi.co/api/v2/pokemon/pikachu");
+        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nomeOuId}`);
         const dados = await resposta.json();
-        console.log("Id: ", dados.id);
-        console.log("Nome: ", dados.name);
-        console.log("Tipo: ", dados.types[0].type.name);
-        console.log("Altura: ", dados.height);
-        console.log("Peso: ", dados.weight);
         const pokemon = {
             id: dados.id,
             nome: dados.name,
@@ -21,5 +18,6 @@ async function buscarPokemon() {
         return null;
     }
 }
-buscarPokemon();
-export {};
+buscarPokemon("pikachu").then(function (pokemon) {
+    console.log(pokemon);
+});
