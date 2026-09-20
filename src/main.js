@@ -21,6 +21,7 @@ async function buscarPokemon(nomeOuId) {
 buscarPokemon("pikachu").then(function (pokemon) {
     if (pokemon !== null) {
         adicionarAoCatalogo(catalogo, pokemon);
+        listarCatalogo(catalogo);
     }
 });
 let catalogo = [];
@@ -37,8 +38,20 @@ function adicionarAoCatalogo(catalogo, pokemon) {
     }
     return catalogo;
 }
-//function listarCatalogo(catalogo: PokemonResumo[]): void {
-//}
+function listarCatalogo(catalogo) {
+    if (catalogo.length === 0) {
+        console.log("[AVISO] Catálogo vazio.");
+        return;
+    }
+    catalogo.forEach(function (pokemon) {
+        console.log("ID:", pokemon.id);
+        console.log("Nome:", pokemon.nome);
+        console.log("Tipos:", pokemon.tipos);
+        console.log("Altura:", pokemon.altura);
+        console.log("Peso:", pokemon.peso);
+        console.log("--------------------");
+    });
+}
 //REMOVER
 //A função deverá:
 //receber o catálogo;
