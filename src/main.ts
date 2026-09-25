@@ -126,3 +126,10 @@ function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo
 
     return catalogoAtualizado;
 }
+
+
+import { PokemonResumo } from "../models/Pokemon";
+
+import { PokemonResumo, PokemonApiResponse } from "../models/Pokemon";
+
+import { buscarPokemon } from "../services/PokeApiService";
