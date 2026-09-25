@@ -1,4 +1,16 @@
-export interface PokemonResumo {
+interface PokemonApiResponse {
+    id: number;
+    name: string;
+    height: number;
+    weight: number;
+    types: {
+        type: {
+            name: string;
+        };
+    }[];
+}
+
+interface PokemonResumo {
     id: number;
     nome: string;
     tipos: string[];
@@ -6,11 +18,21 @@ export interface PokemonResumo {
     peso: number;
 }
 
-async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo | null> {
-    try {
-        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nomeOuId}`);
+async function buscarPokemon(
+    nomeOuId: string | number
+): Promise<PokemonResumo | null> {
 
-        const dados = await resposta.json();
+    try {
+        const resposta = await fetch(
+            `https://pokeapi.co/api/v2/pokemon/${nomeOuId}`
+        );
+
+        if (!resposta.ok) {
+            console.log("[AVISO] Pokémon não encontrado.");
+            return null;
+        }
+
+        const dados: PokemonApiResponse = await resposta.json();
 
         const pokemon: PokemonResumo = {
             id: dados.id,
@@ -25,7 +47,7 @@ async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo |
         return pokemon;
 
     } catch (erro) {
-        console.log("Erro ao buscar pokemon:", erro);
+        console.log("[ERRO] Não foi possível buscar o Pokémon.");
         return null;
     }
 }
