@@ -1,4 +1,4 @@
-interface PokemonApiResponse {
+/*interface PokemonApiResponse {
     id: number;
     name: string;
     height: number;
@@ -125,7 +125,7 @@ function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo
     console.log("[OK] Pokémon removido do catálogo.");
 
     return catalogoAtualizado;
-}
+}*/
 
 
 import { PokemonResumo } from "../models/Pokemon";
@@ -133,3 +133,13 @@ import { PokemonResumo } from "../models/Pokemon";
 import { PokemonResumo, PokemonApiResponse } from "../models/Pokemon";
 
 import { buscarPokemon } from "../services/PokeApiService";
+
+import { carregarPokemonBox } from "../services/BoxService";
+
+async function main() {
+    const box = await carregarPokemonBox();
+
+    console.log(box);
+}
+
+main();
