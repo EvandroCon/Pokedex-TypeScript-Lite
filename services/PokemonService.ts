@@ -1,7 +1,10 @@
 import { PokemonResumo } from "../models/Pokemon";
 
-export function adicionarAoCatalogo(catalogo: PokemonResumo[], pokemon: PokemonResumo): PokemonResumo[] {
-    const existe = catalogo.some(function (item) {
+export const adicionarAoCatalogo = (
+    catalogo: PokemonResumo[], 
+    pokemon: PokemonResumo
+): PokemonResumo[] => {
+    const existe = catalogo.some((item) => {
         return item.id === pokemon.id;
     });
 
@@ -15,14 +18,16 @@ export function adicionarAoCatalogo(catalogo: PokemonResumo[], pokemon: PokemonR
     return catalogo;
 }
 
-export function listarCatalogo(catalogo: PokemonResumo[]): void {
+export const listarCatalogo = (
+    catalogo: PokemonResumo[]
+): void => {
 
     if (catalogo.length === 0) {
         console.log("[AVISO] Catálogo vazio.");
         return;
     }
 
-    catalogo.forEach(function (pokemon) {
+    catalogo.forEach((pokemon) => {
         console.log("ID:", pokemon.id);
         console.log("Nome:", pokemon.nome);
         console.log("Tipos:", pokemon.tipos);
@@ -30,9 +35,11 @@ export function listarCatalogo(catalogo: PokemonResumo[]): void {
         console.log("Peso:", pokemon.peso);
         console.log("--------------------");
     });
-}
+};
 
-export function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo[] {
+export const removerDoCatalogo = (
+    catalogo: PokemonResumo[], id: number
+): PokemonResumo[] => {
     const existe = catalogo.some(function (pokemon) {
         return pokemon.id === id;
     });
@@ -42,9 +49,9 @@ export function removerDoCatalogo(catalogo: PokemonResumo[], id: number): Pokemo
         return catalogo;
     }
 
-    const catalogoAtualizado = catalogo.filter(function (pokemon) {
-        return pokemon.id !== id;
-    });
+    const catalogoAtualizado = catalogo.filter(
+        (pokemon) => pokemon.id !== id
+    );
 
     console.log("[OK] Pokémon removido do catálogo.");
 
