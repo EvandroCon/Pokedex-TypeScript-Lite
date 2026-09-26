@@ -128,17 +128,37 @@ function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo
 }*/
 
 
-import { PokemonResumo } from "../models/Pokemon";
+
 
 import { PokemonResumo, PokemonApiResponse } from "../models/Pokemon";
 
 import { buscarPokemon } from "../services/PokeApiService";
 
-import { carregarPokemonBox } from "../services/BoxService";
+import {
+    carregarPokemonBox,
+    salvarPokemonBox
+} from "../services/BoxService";
 
 async function main() {
+
     const box = await carregarPokemonBox();
 
+    console.log("Box antes:");
+    console.log(box);
+
+    const pikachu = {
+        id: 25,
+        nome: "pikachu",
+        tipos: ["electric"],
+        altura: 4,
+        peso: 60
+    };
+
+    box.push(pikachu);
+
+    await salvarPokemonBox(box);
+
+    console.log("Box depois:");
     console.log(box);
 }
 
