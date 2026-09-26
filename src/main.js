@@ -128,11 +128,25 @@ function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo
     return catalogoAtualizado;
 }*/
 Object.defineProperty(exports, "__esModule", { value: true });
-const BoxService_1 = require("../services/BoxService");
+const PokeApiService_1 = require("../services/PokeApiService");
+const PokemonService_1 = require("../services/PokemonService");
 async function main() {
-    await (0, BoxService_1.adicionarPokemonBox)("pikachu");
-    await (0, BoxService_1.listarPokemonBox)();
-    await (0, BoxService_1.removerPokemonBox)(25);
-    await (0, BoxService_1.listarPokemonBox)();
+    let catalogo = [];
+    const pikachu = await (0, PokeApiService_1.buscarPokemon)("pikachu");
+    if (pikachu !== null) {
+        catalogo = (0, PokemonService_1.adicionarAoCatalogo)(catalogo, pikachu);
+    }
+    const charmander = await (0, PokeApiService_1.buscarPokemon)("charmander");
+    if (charmander !== null) {
+        catalogo = (0, PokemonService_1.adicionarAoCatalogo)(catalogo, charmander);
+    }
+    const pikachuDuplicado = await (0, PokeApiService_1.buscarPokemon)("pikachu");
+    if (pikachuDuplicado !== null) {
+        catalogo = (0, PokemonService_1.adicionarAoCatalogo)(catalogo, pikachuDuplicado);
+    }
+    await (0, PokeApiService_1.buscarPokemon)("pokemon-inexistente");
+    (0, PokemonService_1.listarCatalogo)(catalogo);
+    catalogo = (0, PokemonService_1.removerDoCatalogo)(catalogo, 25);
+    (0, PokemonService_1.listarCatalogo)(catalogo);
 }
 main();

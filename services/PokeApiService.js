@@ -2,26 +2,26 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buscarPokemon = buscarPokemon;
 async function buscarPokemon(nomeOuId) {
-    const url = `https://pokeapi.co/api/v2/pokemon/${nomeOuId}`;
     try {
-        const resposta = await fetch(url);
+        const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${nomeOuId}`);
         if (!resposta.ok) {
-            console.log(`[ERRO] Pokémon não encontrado: ${nomeOuId}`);
+            console.log("[AVISO] Pokémon não encontrado.");
             return null;
         }
         const dados = await resposta.json();
-        const pokemonResumo = {
+        const pokemon = {
             id: dados.id,
             nome: dados.name,
-            tipos: dados.types.map((item) => item.type.name),
+            tipos: dados.types.map(function (item) {
+                return item.type.name;
+            }),
             altura: dados.height,
-            peso: dados.weight,
+            peso: dados.weight
         };
-        console.log(`[OK] Pokémon encontrado: ${pokemonResumo.nome}`);
-        return pokemonResumo;
+        return pokemon;
     }
     catch (erro) {
-        console.log(`[ERRO] Não foi possível buscar o Pokémon: ${nomeOuId}`);
+        console.log("[ERRO] Não foi possível buscar o Pokémon.");
         return null;
     }
 }

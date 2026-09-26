@@ -1,46 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.adicionarPokemonBox = adicionarPokemonBox;
-exports.listarPokemonBox = listarPokemonBox;
-exports.removerPokemonBox = removerPokemonBox;
-const PokeApiService_1 = require("./PokeApiService");
-/*export async function carregarPokemonBox(): Promise<PokemonResumo[]> {
-    const dados = await readFile("pc_box.json", "utf-8");
-
-    return JSON.parse(dados);
-}
-
-export async function salvarPokemonBox(box: PokemonResumo[]): Promise<void> {
-
-    const dados = JSON.stringify(box, null, 4);
-
-    await writeFile("pc_box.json", dados, "utf-8");
-}*/
-async function adicionarPokemonBox(nomeOuId) {
-    const pokemon = await (0, PokeApiService_1.buscarPokemon)(nomeOuId);
-    if (pokemon === null) {
-        console.log("[AVISO] Pokémon não encontrado.");
-        return;
-    }
-    const box = await carregarPokemonBox();
-    const existe = box.some(function (item) {
+exports.adicionarAoCatalogo = adicionarAoCatalogo;
+exports.listarCatalogo = listarCatalogo;
+exports.removerDoCatalogo = removerDoCatalogo;
+function adicionarAoCatalogo(catalogo, pokemon) {
+    const existe = catalogo.some(function (item) {
         return item.id === pokemon.id;
     });
     if (existe) {
-        console.log("[AVISO]", pokemon.nome, "já está na PC Box.");
-        return;
+        console.log("[AVISO]", pokemon.nome, "já está no catalogo.");
     }
-    box.push(pokemon);
-    await salvarPokemonBox(box);
-    console.log("[OK]", pokemon.nome, "adicionado à PC Box.");
+    else {
+        catalogo.push(pokemon);
+        console.log("[OK]", pokemon.nome, "adcionado ao catalogo.");
+    }
+    return catalogo;
 }
-async function listarPokemonBox() {
-    const box = await carregarPokemonBox();
-    if (box.length === 0) {
-        console.log("[AVISO] PC Box vazia.");
+function listarCatalogo(catalogo) {
+    if (catalogo.length === 0) {
+        console.log("[AVISO] Catálogo vazio.");
         return;
     }
-    box.forEach(function (pokemon) {
+    catalogo.forEach(function (pokemon) {
         console.log("ID:", pokemon.id);
         console.log("Nome:", pokemon.nome);
         console.log("Tipos:", pokemon.tipos);
@@ -49,18 +30,17 @@ async function listarPokemonBox() {
         console.log("--------------------");
     });
 }
-async function removerPokemonBox(id) {
-    const box = await carregarPokemonBox();
-    const existe = box.some(function (pokemon) {
+function removerDoCatalogo(catalogo, id) {
+    const existe = catalogo.some(function (pokemon) {
         return pokemon.id === id;
     });
     if (!existe) {
-        console.log("[AVISO] Pokémon não encontrado na PC Box.");
-        return;
+        console.log("[AVISO] Nenhum Pokémon encontrado com esse ID.");
+        return catalogo;
     }
-    const boxAtualizada = box.filter(function (pokemon) {
+    const catalogoAtualizado = catalogo.filter(function (pokemon) {
         return pokemon.id !== id;
     });
-    await salvarPokemonBox(boxAtualizada);
-    console.log("[OK] Pokémon removido da PC Box.");
+    console.log("[OK] Pokémon removido do catálogo.");
+    return catalogoAtualizado;
 }

@@ -1,15 +1,33 @@
-import { PokemonResumo } from "../models/Pokemon";
+import { PokemonApiResponse, PokemonResumo } from "../models/Pokemon";
 
-export function adicionarAoCatalogo(catalogo: PokemonResumo[], pokemon: PokemonResumo): PokemonResumo[] {
-  
-  const jaExiste = catalogo.some((item) => item.id === pokemon.id);
+export async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo | null> {
 
-  if (jaExiste) {
-    console.log(`[AVISO] ${pokemon.nome} já está no catálogo.`);
-    return catalogo;
-  }
+    try {
+        const resposta = await fetch(
+            `https://pokeapi.co/api/v2/pokemon/${nomeOuId}`
+        );
 
-  console.log(`[OK] ${pokemon.nome} adicionado ao catálogo.`);
-  return [...catalogo, pokemon];
+        if (!resposta.ok) {
+            console.log("[AVISO] Pokémon não encontrado.");
+            return null;
+        }
+
+        const dados: PokemonApiResponse = await resposta.json();
+
+        const pokemon: PokemonResumo = {
+            id: dados.id,
+            nome: dados.name,
+            tipos: dados.types.map(function (item) {
+                return item.type.name;
+            }),
+            altura: dados.height,
+            peso: dados.weight
+        };
+
+        return pokemon;
+
+    } catch (erro) {
+        console.log("[ERRO] Não foi possível buscar o Pokémon.");
+        return null;
+    }
 }
-

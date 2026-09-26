@@ -130,20 +130,35 @@ function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo
 
 
 
-import { PokemonResumo, PokemonApiResponse } from "../models/Pokemon";
-
 import { buscarPokemon } from "../services/PokeApiService";
-
-import { adicionarPokemonBox, listarPokemonBox, removerPokemonBox } from "../services/BoxService";
+import { adicionarAoCatalogo, listarCatalogo, removerDoCatalogo } from "../services/PokemonService";
+import { PokemonResumo } from "../models/Pokemon";
 
 async function main() {
-    await adicionarPokemonBox("pikachu");
+  let catalogo: PokemonResumo[] = [];
 
-    await listarPokemonBox();
+  const pikachu = await buscarPokemon("pikachu");
+  if (pikachu !== null) {
+    catalogo = adicionarAoCatalogo(catalogo, pikachu);
+  }
 
-    await removerPokemonBox(25);
+  const charmander = await buscarPokemon("charmander");
+  if (charmander !== null) {
+    catalogo = adicionarAoCatalogo(catalogo, charmander);
+  }
 
-    await listarPokemonBox();
+  const pikachuDuplicado = await buscarPokemon("pikachu");
+  if (pikachuDuplicado !== null) {
+    catalogo = adicionarAoCatalogo(catalogo, pikachuDuplicado);
+  }
+
+  await buscarPokemon("pokemon-inexistente");
+
+  listarCatalogo(catalogo);
+
+  catalogo = removerDoCatalogo(catalogo, 25);
+
+  listarCatalogo(catalogo);
 }
 
 main();
