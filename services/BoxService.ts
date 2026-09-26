@@ -59,3 +59,24 @@ export async function listarPokemonBox(): Promise<void> {
         console.log("--------------------");
     });
 }
+
+export async function removerPokemon(id: number): Promise<void> {
+    const box = await carregarPokemonBox();
+
+    const existe = box.some(function (pokemon) {
+        return pokemon.id === id;
+    });
+
+    if (!existe) {
+        console.log("[AVISO] Pokémon não encontrado na PC Box.");
+        return;
+    }
+
+    const boxAtualizada = box.filter(function (pokemon) {
+        return pokemon.id !== id;
+    });
+
+    await salvarPokemonBox(boxAtualizada);
+
+    console.log("[OK] Pokémon removido da PC Box.");
+}
