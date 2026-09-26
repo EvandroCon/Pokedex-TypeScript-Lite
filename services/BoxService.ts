@@ -14,7 +14,7 @@ export async function salvarPokemonBox(box: PokemonResumo[]): Promise<void> {
     await writeFile("pc_box.json", dados, "utf-8");
 }
 
-export async function adicionarPokemon(pokemon: PokemonResumo): Promise<void> {
+export async function adicionarPokemonBox(pokemon: PokemonResumo): Promise<void> {
 
     const box = await carregarPokemonBox();
 
@@ -40,4 +40,22 @@ export async function adicionarPokemon(pokemon: PokemonResumo): Promise<void> {
         pokemon.nome,
         "adicionado à PC Box."
     );
+}
+
+export async function listarPokemonBox(): Promise<void> {
+    const box = await carregarPokemonBox();
+
+    if (box.length === 0) {
+        console.log("[AVISO] PC Box vazia.");
+        return;
+    }
+
+    box.forEach(function (pokemon) {
+        console.log("ID:", pokemon.id);
+        console.log("Nome:", pokemon.nome);
+        console.log("Tipos:", pokemon.tipos);
+        console.log("Altura:", pokemon.altura);
+        console.log("Peso:", pokemon.peso);
+        console.log("--------------------");
+    });
 }
