@@ -14,3 +14,20 @@ export function adicionarAoCatalogo(catalogo: PokemonResumo[], pokemon: PokemonR
 
     return catalogo;
 }
+
+export function listarCatalogo(catalogo: PokemonResumo[]): void {
+
+    if (catalogo.length === 0) {
+        console.log("[AVISO] Catálogo vazio.");
+        return;
+    }
+
+    catalogo.forEach(function (pokemon) {
+        console.log("ID:", pokemon.id);
+        console.log("Nome:", pokemon.nome);
+        console.log("Tipos:", pokemon.tipos);
+        console.log("Altura:", pokemon.altura);
+        console.log("Peso:", pokemon.peso);
+        console.log("--------------------");
+    });
+}
