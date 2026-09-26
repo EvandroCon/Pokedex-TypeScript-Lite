@@ -3,9 +3,7 @@ import {
     PokemonApiResponse
 } from "../models/Pokemon";
 
-export async function buscarPokemon(
-    nomeOuId: string | number
-): Promise<PokemonResumo | null> {
+export async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo | null> {
 
     try {
         const resposta = await fetch(

@@ -1,6 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { PokemonResumo } from "../models/Pokemon";
 
+import { buscarPokemon } from "./PokeApiService";
+
 export async function carregarPokemonBox(): Promise<PokemonResumo[]> {
     const dados = await readFile("pc_box.json", "utf-8");
 
@@ -14,7 +16,13 @@ export async function salvarPokemonBox(box: PokemonResumo[]): Promise<void> {
     await writeFile("pc_box.json", dados, "utf-8");
 }
 
-export async function adicionarPokemonBox(pokemon: PokemonResumo): Promise<void> {
+export async function adicionarPokemonBox(nomeOuId: string | number): Promise<void> {
+    const pokemon = await buscarPokemon(nomeOuId);
+
+    if (pokemon === null) {
+        console.log("[AVISO] Pokémon não encontrado.");
+        return;
+    }
 
     const box = await carregarPokemonBox();
 
@@ -23,11 +31,7 @@ export async function adicionarPokemonBox(pokemon: PokemonResumo): Promise<void>
     });
 
     if (existe) {
-        console.log(
-            "[AVISO]",
-            pokemon.nome,
-            "já está na PC Box."
-        );
+        console.log("[AVISO]", pokemon.nome, "já está na PC Box.");
         return;
     }
 
@@ -35,11 +39,7 @@ export async function adicionarPokemonBox(pokemon: PokemonResumo): Promise<void>
 
     await salvarPokemonBox(box);
 
-    console.log(
-        "[OK]",
-        pokemon.nome,
-        "adicionado à PC Box."
-    );
+    console.log("[OK]", pokemon.nome, "adicionado à PC Box.");
 }
 
 export async function listarPokemonBox(): Promise<void> {
