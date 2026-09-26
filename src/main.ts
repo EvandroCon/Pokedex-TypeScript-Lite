@@ -134,32 +134,16 @@ import { PokemonResumo, PokemonApiResponse } from "../models/Pokemon";
 
 import { buscarPokemon } from "../services/PokeApiService";
 
-import {
-    carregarPokemonBox,
-    salvarPokemonBox
-} from "../services/BoxService";
+import { adicionarPokemonBox, listarPokemonBox, removerPokemonBox } from "../services/BoxService";
 
 async function main() {
+    await adicionarPokemonBox("pikachu");
 
-    const box = await carregarPokemonBox();
+    await listarPokemonBox();
 
-    console.log("Box antes:");
-    console.log(box);
+    await removerPokemonBox(25);
 
-    const pikachu = {
-        id: 25,
-        nome: "pikachu",
-        tipos: ["electric"],
-        altura: 4,
-        peso: 60
-    };
-
-    box.push(pikachu);
-
-    await salvarPokemonBox(box);
-
-    console.log("Box depois:");
-    console.log(box);
+    await listarPokemonBox();
 }
 
 main();

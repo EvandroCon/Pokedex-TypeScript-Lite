@@ -130,7 +130,9 @@ function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo
 Object.defineProperty(exports, "__esModule", { value: true });
 const BoxService_1 = require("../services/BoxService");
 async function main() {
-    const box = await (0, BoxService_1.carregarPokemonBox)();
-    console.log(box);
+    await (0, BoxService_1.adicionarPokemonBox)("pikachu");
+    await (0, BoxService_1.listarPokemonBox)();
+    await (0, BoxService_1.removerPokemonBox)(25);
+    await (0, BoxService_1.listarPokemonBox)();
 }
 main();

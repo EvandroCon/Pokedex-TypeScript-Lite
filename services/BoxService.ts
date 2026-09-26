@@ -60,7 +60,7 @@ export async function listarPokemonBox(): Promise<void> {
     });
 }
 
-export async function removerPokemon(id: number): Promise<void> {
+export async function removerPokemonBox(id: number): Promise<void> {
     const box = await carregarPokemonBox();
 
     const existe = box.some(function (pokemon) {
