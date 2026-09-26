@@ -1,9 +1,8 @@
-import {
-    PokemonResumo,
-    PokemonApiResponse
-} from "../models/Pokemon";
+import { PokemonApiResponse, PokemonResumo } from "../models/Pokemon";
 
-export async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo | null> {
+export const buscarPokemon = async (
+    nomeOuId: string | number
+): Promise<PokemonResumo | null> => {
 
     try {
         const resposta = await fetch(
@@ -11,6 +10,7 @@ export async function buscarPokemon(nomeOuId: string | number): Promise<PokemonR
         );
 
         if (!resposta.ok) {
+            console.log("[AVISO] Pokémon não encontrado.");
             return null;
         }
 
@@ -19,7 +19,7 @@ export async function buscarPokemon(nomeOuId: string | number): Promise<PokemonR
         const pokemon: PokemonResumo = {
             id: dados.id,
             nome: dados.name,
-            tipos: dados.types.map(function (item) {
+            tipos: dados.types.map((item) => {
                 return item.type.name;
             }),
             altura: dados.height,
@@ -29,7 +29,7 @@ export async function buscarPokemon(nomeOuId: string | number): Promise<PokemonR
         return pokemon;
 
     } catch (erro) {
-        console.log("Erro ao buscar pokemon:", erro);
+        console.log("[ERRO] Não foi possível buscar o Pokémon.");
         return null;
     }
 }
