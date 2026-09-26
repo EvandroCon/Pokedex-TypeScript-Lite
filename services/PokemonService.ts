@@ -1,44 +1,55 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.carregarPokemonBox = carregarPokemonBox;
-exports.salvarPokemonBox = salvarPokemonBox;
-exports.adicionarPokemonBox = adicionarPokemonBox;
-exports.listarPokemonBox = listarPokemonBox;
-exports.removerPokemonBox = removerPokemonBox;
-const promises_1 = require("node:fs/promises");
-const PokeApiService_1 = require("./PokeApiService");
-async function carregarPokemonBox() {
-    const dados = await (0, promises_1.readFile)("pc_box.json", "utf-8");
+import { readFile, writeFile } from "node:fs/promises";
+import { PokemonResumo } from "../models/Pokemon";
+
+import { buscarPokemon } from "./PokeApiService";
+
+/*export async function carregarPokemonBox(): Promise<PokemonResumo[]> {
+    const dados = await readFile("pc_box.json", "utf-8");
+
     return JSON.parse(dados);
 }
-async function salvarPokemonBox(box) {
+
+export async function salvarPokemonBox(box: PokemonResumo[]): Promise<void> {
+
     const dados = JSON.stringify(box, null, 4);
-    await (0, promises_1.writeFile)("pc_box.json", dados, "utf-8");
-}
-async function adicionarPokemonBox(nomeOuId) {
-    const pokemon = await (0, PokeApiService_1.buscarPokemon)(nomeOuId);
+
+    await writeFile("pc_box.json", dados, "utf-8");
+}*/
+
+export async function adicionarPokemonBox(nomeOuId: string | number): Promise<void> {
+    const pokemon = await buscarPokemon(nomeOuId);
+
     if (pokemon === null) {
         console.log("[AVISO] Pokémon não encontrado.");
         return;
     }
+
     const box = await carregarPokemonBox();
+
     const existe = box.some(function (item) {
         return item.id === pokemon.id;
     });
+
     if (existe) {
         console.log("[AVISO]", pokemon.nome, "já está na PC Box.");
         return;
     }
+
     box.push(pokemon);
+
     await salvarPokemonBox(box);
+
     console.log("[OK]", pokemon.nome, "adicionado à PC Box.");
 }
-async function listarPokemonBox() {
+
+export async function listarPokemonBox(): Promise<void> {
     const box = await carregarPokemonBox();
+
     if (box.length === 0) {
         console.log("[AVISO] PC Box vazia.");
         return;
     }
+
     box.forEach(function (pokemon) {
         console.log("ID:", pokemon.id);
         console.log("Nome:", pokemon.nome);
@@ -48,18 +59,24 @@ async function listarPokemonBox() {
         console.log("--------------------");
     });
 }
-async function removerPokemonBox(id) {
+
+export async function removerPokemonBox(id: number): Promise<void> {
     const box = await carregarPokemonBox();
+
     const existe = box.some(function (pokemon) {
         return pokemon.id === id;
     });
+
     if (!existe) {
         console.log("[AVISO] Pokémon não encontrado na PC Box.");
         return;
     }
+
     const boxAtualizada = box.filter(function (pokemon) {
         return pokemon.id !== id;
     });
+
     await salvarPokemonBox(boxAtualizada);
+
     console.log("[OK] Pokémon removido da PC Box.");
 }

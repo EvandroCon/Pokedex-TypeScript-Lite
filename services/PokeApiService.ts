@@ -1,35 +1,33 @@
-import {
-    PokemonResumo,
-    PokemonApiResponse
-} from "../models/Pokemon";
+import { PokemonApiResponse, PokemonResumo } from "../models/Pokemon";
 
-export async function buscarPokemon(nomeOuId: string | number): Promise<PokemonResumo | null> {
+export async function buscarPokemon(
+  nomeOuId: string
+): Promise<PokemonResumo | null> {
+  const url = `https://pokeapi.co/api/v2/pokemon/${nomeOuId}`;
 
-    try {
-        const resposta = await fetch(
-            `https://pokeapi.co/api/v2/pokemon/${nomeOuId}`
-        );
+  try {
+    const resposta = await fetch(url);
 
-        if (!resposta.ok) {
-            return null;
-        }
-
-        const dados: PokemonApiResponse = await resposta.json();
-
-        const pokemon: PokemonResumo = {
-            id: dados.id,
-            nome: dados.name,
-            tipos: dados.types.map(function (item) {
-                return item.type.name;
-            }),
-            altura: dados.height,
-            peso: dados.weight
-        };
-
-        return pokemon;
-
-    } catch (erro) {
-        console.log("Erro ao buscar pokemon:", erro);
-        return null;
+    if (!resposta.ok) {
+      console.log(`[ERRO] Pokémon não encontrado: ${nomeOuId}`);
+      return null;
     }
+
+    const dados: PokemonApiResponse = await resposta.json();
+
+    const pokemonResumo: PokemonResumo = {
+      id: dados.id,
+      nome: dados.name,
+      tipos: dados.types.map((item) => item.type.name),
+      altura: dados.height,
+      peso: dados.weight,
+    };
+
+    console.log(`[OK] Pokémon encontrado: ${pokemonResumo.nome}`);
+    return pokemonResumo;
+
+  } catch (erro) {
+    console.log(`[ERRO] Não foi possível buscar o Pokémon: ${nomeOuId}`);
+    return null;
+  }
 }
