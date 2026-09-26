@@ -31,3 +31,22 @@ export function listarCatalogo(catalogo: PokemonResumo[]): void {
         console.log("--------------------");
     });
 }
+
+export function removerDoCatalogo(catalogo: PokemonResumo[], id: number): PokemonResumo[] {
+    const existe = catalogo.some(function (pokemon) {
+        return pokemon.id === id;
+    });
+
+    if (!existe) {
+        console.log("[AVISO] Nenhum Pokémon encontrado com esse ID.");
+        return catalogo;
+    }
+
+    const catalogoAtualizado = catalogo.filter(function (pokemon) {
+        return pokemon.id !== id;
+    });
+
+    console.log("[OK] Pokémon removido do catálogo.");
+
+    return catalogoAtualizado;
+}
